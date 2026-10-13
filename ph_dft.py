@@ -1,14 +1,37 @@
 import numpy as np
+from scipy.spatial.distance import pdist, squareform
+from ripser import ripser
+
+def make_bar_rep(bar_pairs,t = 8, p=24):
+    # shape should be (p,t)
+    accum = np.zeros((p,t)).astype(np.complex128)
+    for (k,l) in bar_pairs:
+        t_arr = np.repeat(np.expand_dims(k*np.arange(t)/t,axis=0), p, axis=0)
+        p_arr = np.repeat(np.expand_dims(l*np.arange(p)/p,axis=1), t, axis=1)
+        cur_bar = np.exp(-2j*np.pi*(t_arr + p_arr))
+        accum += cur_bar
+    return accum
+
+def get_bar_dist(bar1, bar2):
+    return np.sum(np.abs(bar1-bar2))
 
 
-b1 = np.array([[6,9],[7,11]])
-b2 = np.array([[0,12],[1,12],[2,14],[3,12],[4,11],[6,4],[7,7]])
-b3 = np.array([[0,9],[1,9],[2,7],[3,5],[4,7],[7,7]])
-b4 = np.array([[0,7],[1,5],[2,5],[3,3],[4,5],[6,0],[7,5]])
-b5 = np.array([[0,2],[0,7],[0,11]])
+def vectorize_bars(barlist):
+    num_bars = len(barlist)
+    flattened_dim = barlist[0].shape[0] * barlist[0].shape[1]
+    return np.array(barlist).reshape(num_bars, flattened_dim)
 
-#cexp = lambda x,t,p: np.exp(np.multiply(-2j*np.pi, x/[t,p]))
-# expects arrays of shape (num_pairs, 2) so x[:,0] gets all time steps
-# returns (num_pairs, 2)
 
-b_arr = [cexp(x,8,24) for x in [b1,b2,b3,b4,b5]]
+def get_pairwise_distances(barlist, norm=True):
+    ret= pdist(vectorize_bars(barlist), metric=get_bar_dist)
+    if norm == True:
+        return ret/ret.max()
+    else:
+        return ret
+
+def calc_rips(_bars, maxdim=1):
+    b_arr = [make_bar_rep(x) for x in _bars]
+    dists = squareform(get_pairwise_distances(b_arr, norm=True)*100.)
+    ret = ripser(dists,maxdim=maxdim,distance_matrix = True)
+    return ret
+
