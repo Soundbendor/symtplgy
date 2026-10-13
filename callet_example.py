@@ -11,7 +11,7 @@ b4 = np.array([[0,7],[1,5],[2,5],[3,3],[4,5],[6,0],[7,5]])
 b5 = np.array([[0,2],[0,7],[0,11]])
 bars = [b1, b2, b3, b4, b5]
 
-rips = ph_dft.calc_rips(bars)
+rips = ph_dft.calc_rips(bars,t=8,p=24,maxdim=1)
 #plot_diagrams(rips['dgms'], show = True)
 gudhi.plot_persistence_diagram(rips['dgms'])
 plt.show()

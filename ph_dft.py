@@ -29,8 +29,8 @@ def get_pairwise_distances(barlist, norm=True):
     else:
         return ret
 
-def calc_rips(_bars, maxdim=1):
-    b_arr = [make_bar_rep(x) for x in _bars]
+def calc_rips(_bars, t = 8, p = 24, maxdim=1):
+    b_arr = [make_bar_rep(x,t=t, p=p) for x in _bars]
     dists = squareform(get_pairwise_distances(b_arr, norm=True)*100.)
     ret = ripser(dists,maxdim=maxdim,distance_matrix = True)
     return ret
