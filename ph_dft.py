@@ -1,4 +1,5 @@
 import numpy as np
+import gudhi
 from scipy.spatial.distance import pdist, squareform
 from ripser import ripser
 
@@ -35,3 +36,11 @@ def calc_rips(_bars, t = 8, p = 24, maxdim=1):
     ret = ripser(dists,maxdim=maxdim,distance_matrix = True)
     return ret
 
+# to do
+def graph_rips(_bars, t -8, p = 24, maxdim = 2):
+    b_arr = [make_bar_rep(x,t=t, p=p) for x in _bars]
+    dists = squareform(get_pairwise_distances(b_arr, norm=True)*100.)
+    thresh = (np.arange(10) + 1)*100.
+    for thr in thresh:
+        cplx = gudhi.SimplexTree.create_from_array(dists, max_filtration=thr)
+        cplx.expansion(maxdim)
