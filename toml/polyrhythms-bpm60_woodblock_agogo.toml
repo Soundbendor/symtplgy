@@ -1,0 +1,6 @@
+[dataset_limits]
+inst1 = "Agogo"
+inst2 = "Woodblock"
+offset_lvl = 0
+rvb_lvl = 0
+bpm = 60

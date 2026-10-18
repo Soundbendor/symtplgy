@@ -22,15 +22,12 @@ from distutils.util import strtobool
 def set_seed(seed):
     torch.manual_seed(seed)
 
-def calculate_mean_stdev(generator, train_subset, train_size, emb_dim, shuffle = True, device='cpu'):
-    train_dl = TUD.DataLoader(train_subset, batch_size = train_size, shuffle=shuffle, generator=generator)
+def calculate_mean_stdev(generator, cur_dataset, shuffle = True, device='cpu'):
+    cur_len = len(cur_dataset)
+    cur_dl = TUD.DataLoader(cur_dataset, batch_size = cur_len, shuffle=shuffle, generator=generator)
     
-    _mean = None
-    _std = None
-    _max = None
-    _min = None
     with torch.no_grad():
-        for batch_idx, data in enumerate(train_dl):
+        for batch_idx, data in enumerate(cur_dl):
             _ipt, ground_truth = data
 
         
@@ -58,45 +55,33 @@ if __name__ == "__main__":
     parser.add_argument("-mpl", "--meanpool", type=strtobool, default=False, help="embeddings meanpooled over seq len (override for AR models)")
     parser.add_argument("-fsq", "--full_seq", type=strtobool, default=True, help="use full seq embeddings (override for both AR and Masked)")
     parser.add_argument("-dbg", "--debug", type=strtobool, default=False, help="debug")
-    parser.add_argument("-cd", "--use_cuda", type=strtobool, default=True, help="use cuda")
     parser.add_argument("-sh", "--from_share", type=strtobool, default=True, help="load from share partition")
     parser.add_argument("-sj", "--slurm_job", type=int, default=0, help="slurm job")
     parser.add_argument("-sf", "--suffix", type=int, default=1, help="suffix")
+    parser.add_argument("-dtml", "--data_toml", type=str, default="", help="load toml with data specifications")
+    parser.add_argument("-li", "--layer_idx", type=int, default=-1, help="load specific layer if >= 0")
 
     args = parser.parse_args()
 
     #### some initialization
     device = 'cpu'
+    """
     if args.use_cuda == True and torch.cuda.is_available() == True:
         device = 'cuda'
         torch.cuda.empty_cache()
         torch.set_default_device(device)
+    """
     from_dir = ""
     if args.from_share == True:
         from_dir = os.path.join(UC.SHARE_PATH, 'syntheory_plus_expr')
-    datadict = UD.load_data_dict(args.dataset)
+    datadict = UD.load_data_dict(args.dataset, toml_fname = args.data_toml)
 
     meanpool, last_token =  UEX.parse_seqtype_overrides(model_size, meanpool_override = args.meanpool, full_seq_override = args.full_seq)
-    cur_ds = ProbeDataset(datadict, args.model_size, layer_idx=0, from_dir = from_dir, meanpool = meanpool, last_token = last_token, to_torch = True, device = device)
+    cur_ds = ProbeDataset(datadict, args.model_size, layer_idx=args.layer_idx, from_dir = from_dir, meanpool = meanpool, last_token = last_token, to_torch = True, device = device)
 
     configdict = UP.build_config(args, datadict)
-    subsetdict = UP.get_preq_valid_test_subsets(cur_ds, datadict, configdict)
-    wandbdict = UW.build_initdict(args, configdict)
 
     if args.debug == True:
         pass
-    elif args.stats == True:
-        train_subset = subsetdict['preq_all_subset']
-        train_size = subsetdict['preq_all_size']
-        for layer_idx in range(configdict['model_num_layers']): 
-            torch_gen = torch.Generator(device=device)
-            torch_gen.manual_seed(configdict['seed'])
-            train_subset.dataset.set_layer_idx(layer_idx)
-            cur_mean, cur_std, cur_max, cur_min = calculate_mean_stdev(torch_gen, train_subset, train_size, configdict['model_dim'] , shuffle = True, device=device)
-            print(layer_idx, cur_mean, cur_std)
-            UP.save_mean(cur_mean, configdict, layer_idx)
-            UP.save_std(cur_std, configdict, layer_idx)
-            UP.save_max(cur_max, configdict, layer_idx)
-            UP.save_min(cur_min, configdict, layer_idx)
-
-   
+    else: 
+        torch_gen = torch.Generator(device=device)

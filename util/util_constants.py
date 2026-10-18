@@ -8,7 +8,7 @@ JUKEBOX_DOWNSAMP_RATE = 15
 WAV_DUR = 4.0
 LOG2E = np.log2(np.exp(1.))
 
-
+TOML_FOLDER = 'toml'
 LAST_TOKEN_SUFFIX = 'lasttok'
 MEAN_TOKEN_SUFFIX = 'meantok'
 FULLSEQ_TOKEN_SUFFIX = 'fullseq'

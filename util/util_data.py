@@ -18,16 +18,28 @@ from data_helpers import intervals as IVL
 from data_helpers import simple_progressions as SPG
 
 from sklearn.model_selection import train_test_split
+
+
+def filter_df(cur_df, cur_toml):
+    ret_df = cur_df
+    if 'dataset_limits' in cur_toml.keys():
+        for k,v in cur_toml['dataset_limits'].items():
+            ret_df = ret_df.filter((pl.col(k) ==  v))
+    return ret_df
+
+
+def parse_toml(file_path):
+    cur = None
+    with open(file_path, 'rb') as f:
+        cur = tomllib.load(f)
+    return cur
+
+
 def get_df(dataset):
     fname = f'{dataset}-metadata.csv'
     csvpath = os.path.join(UMN.by_projpath('csv', make_dir = False), fname)
     cur_data = pl.read_csv(csvpath)
     return cur_data
-
-
-
-
-
 
 
 def get_dataset_proportions(dataset_size, num_steps = 7, train_pct = UC.TRAIN_PCT, test_subpct = UC.TEST_SUBPCT):
@@ -64,7 +76,7 @@ def check_dataset_proportions(dataset_size, num_classes, num_steps = 5, train_pc
 
 # classdict: go from classes to indices
 # idxdict: go from indices to classes
-def load_data_dict(dataset):
+def load_data_dict(dataset, toml_fname=""):
     num_classes = None
     classdict = None
     idxdict = None
@@ -75,6 +87,9 @@ def load_data_dict(dataset):
     cur_df = get_df(dataset)
     num_examples = len(cur_df)
     train_on_middle = False
+    tomldict = None
+    if len(toml_fname) > 0:
+        tomldict = parse_toml(os.path.join(UMN.by_projpath(UC.TOML_FOLDER), toml_fname))
     if dataset == 'polyrhythms':
         num_classes = POLY.num_poly
         classdict = POLY.polystr_to_idx
@@ -163,6 +178,7 @@ def load_data_dict(dataset):
             'label_arr': label_arr,
             'is_balanced': is_balanced,
             'train_on_middle': train_on_middle,
+            'tomldict': tomldict
             }
     return ret
 

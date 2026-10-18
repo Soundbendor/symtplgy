@@ -12,26 +12,10 @@ from sklearn.model_selection import train_test_split
 def build_config(parser_args, datadict):
     _config = {k:v for (k,v) in vars(parser_args).items()}
     model_shape = UMN.get_acts_shape(_config['model_size'])
-    _config['learning_rate'] = UC.LEARNING_RATE
-    _config['num_epochs'] = UC.NUM_EPOCHS
     _config['seed'] = UC.SEED
-    _config['batch_size'] = UC.BATCH_SIZE
-    _config['is_64bit'] = UC.IS_64BIT
-    _config['patience_delta'] = UC.PATIENCE_DELTA
     _config['model_dim'] = model_shape[1]
     _config['model_num_layers'] = model_shape[0]
     _config['dataloader_shuffle'] = UC.DATALOADER_SHUFFLE
-    _config['pca_num_coeffs'] = UC.PCA_NUM_COEFFS
-    _config['pca_propvar_thresh'] = UC.PCA_PROPVAR_THRESH
-    if parser_args.expr_type == 'mlp':
-        _config['probe_hidden_dims'] = UC.MLPPROBE_HIDDEN_DIMS
-    elif parser_args.expr_type == 'linear':
-        _config['probe_hidden_dims'] = []
-    _config['early_stopping_check_interval'] = UC.EARLY_STOPPING_CHECK_INTERVAL
-    _config['early_stopping_patience'] = UC.EARLY_STOPPING_PATIENCE
-
-    _config['train_pct'] = UC.TRAIN_PCT
-    _config['test_subpct'] = UC.TEST_SUBPCT
 
     _config['is_balanced'] = datadict['is_balanced']
     _config['use_weights'] = UC.USE_WEIGHTS

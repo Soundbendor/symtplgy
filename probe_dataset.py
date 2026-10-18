@@ -5,7 +5,10 @@ import util.util_main as UMN
 
 class ProbeDataset(TUD.Dataset):
     def __init__(self, datadict, model_size, layer_idx=0, from_dir = '', to_torch = True, meanpool = False, last_token = True, emit_name = False, device ='cpu'):
-        self.df = datadict['df']
+        if datadict['tomldict'] != None:
+            self.df = UD.filter_df(datadict['df'], datadict['tomldict'])
+        else:
+            self.df = datadict['df']
         self.dataset = datadict['dataset']
         self.classdict = datadict['classdict']
         self.label = datadict['label']
