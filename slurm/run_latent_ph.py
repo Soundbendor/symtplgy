@@ -20,6 +20,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-ds", "--datasets", nargs="+", type=str, default=["polyrhythms", "secondary_dominants", "dynamics", "seventh_chords", "mode_mixture", "time_signatures", "notes", "scales", "intervals", "simple_progressions", "chords"], help="datasets")
     parser.add_argument("-nd", "--num_days", type=int, default=1, help="number of days")
+    parser.add_argument("-no", "--node", type=str, default="", help="node to run on")
     parser.add_argument("-pt", "--partition", type=str, default="preempt", help="partition to run on")
     parser.add_argument("-ms", "--model_sizes", nargs="+", type=str, default=["MERT-v1-95M", "MERT-v1-330M", "wav2vec2-base", "wav2vec2-large", "musicgen-small", "musicgen-medium", "musicgen-large"], help="musicgen-small/musicgen-medium/musicgen-large/jukebox/MERT-v1-95M/MERT-v1-330M/wav2vec2-base/wav2vec2-large")
     parser.add_argument("-mpl", "--meanpool", type=strtobool, default=False, help="embeddings meanpooled over seq len (override for AR models)")
