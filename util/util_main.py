@@ -200,7 +200,8 @@ def dict_arrayargs_to_str(cur_dict):
 def get_save_path(save_type, configdict, other=None, make_dir = True):
     ext = None
     subfolder = None
-    use_expr_type_folder = True
+    use_expr_type_folder = False
+    expr_type = ""
     dataset = configdict['dataset']
     model_size = configdict['model_size']
     suffix = configdict['suffix']
