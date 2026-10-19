@@ -37,7 +37,7 @@ def calculate_ph(generator, cur_dataset, configdict, datadict, layer_idx = 0, ma
                 print(f'did not load entire split of size {cur_len}')
                 break
             
-            cur_rips = UPH.calc_rips(_ipt.numpy(), maxdim = maxdim)
+            cur_rips = UPH.calc_rips(_ipt.numpy(), maxdim = maxdim, calc_distance = True)
             UPH.save_ph_groups(cur_rips['dgms'], configdict, layer_idx, tomlstr=datadict['tomlstr'])
             UPH.save_ph_diagram_barcode(cur_rips['dgms'], configdict, layer_idx, tomlstr=datadict['tomlstr'])
             success = True

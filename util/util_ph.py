@@ -4,6 +4,7 @@ import gudhi
 import matplotlib.pyplot as plt
 import numpy as np
 from persim import plot_diagrams
+from scipy.spatial.distance import pdist, squareform
 from ripser import ripser
 
 
@@ -48,6 +49,21 @@ def save_ph_diagram_barcode(dgm, configdict, layer_idx, tomlstr=''):
     fig.clear()
     plt.close()
 
-def calc_rips(cur_data, maxdim = 1):
-    cur_rips = ripser(cur_data, maxdim = maxdim, distance_matrix = False, metric = 'euclidean')
+
+def get_pairwise_distances(cur_data, norm=True):
+    ret= pdist(cur_data, metric='euclidean')
+    if norm == True:
+        return ret/ret.max()
+    else:
+        return ret
+
+d
+
+def calc_rips(cur_data, maxdim = 1, calc_distance = True):
+    cur_rips = None
+    if calc_distance == False:
+        cur_rips = ripser(cur_data, maxdim = maxdim, distance_matrix = False, metric = 'euclidean')
+    else:
+        dists = squareform(get_pairwise_distances(b_arr, norm=True)*100.)
+        cur_rips = ripser(dists, maxdim = maxdim, distance_matrix = True, metric)
     return cur_rips
