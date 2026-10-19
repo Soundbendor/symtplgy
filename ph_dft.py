@@ -37,7 +37,7 @@ def calc_rips(_bars, t = 8, p = 24, maxdim=1):
     return ret
 
 # to do
-def graph_rips(_bars, t -8, p = 24, maxdim = 2):
+def graph_rips(_bars, t = -8, p = 24, maxdim = 2):
     b_arr = [make_bar_rep(x,t=t, p=p) for x in _bars]
     dists = squareform(get_pairwise_distances(b_arr, norm=True)*100.)
     thresh = (np.arange(10) + 1)*100.

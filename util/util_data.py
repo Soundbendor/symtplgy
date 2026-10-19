@@ -27,6 +27,14 @@ def filter_df(cur_df, cur_toml):
             ret_df = ret_df.filter((pl.col(k) ==  v))
     return ret_df
 
+def get_toml_filter_str(cur_toml):
+    ret_arr = []
+    if 'dataset_limits' in cur_toml.keys():
+        for k,v in cur_toml['dataset_limits'].items():
+            cur_str = f'{k}_{v}'
+            ret_arr.append(cur_str)
+    ret_str = '-'.join(ret_arr)
+    return ret_str
 
 def parse_toml(file_path):
     cur = None
@@ -88,8 +96,11 @@ def load_data_dict(dataset, toml_fname=""):
     num_examples = len(cur_df)
     train_on_middle = False
     tomldict = None
+    tomlstr = ''
     if len(toml_fname) > 0:
-        tomldict = parse_toml(os.path.join(UMN.by_projpath(UC.TOML_FOLDER), toml_fname))
+        tomlpath = os.path.join(UMN.by_projpath(UC.TOML_FOLDER), toml_fname)
+        tomldict = parse_toml(tomlpath)
+        tomlstr = get_toml_filter_str(tomlpath)
     if dataset == 'polyrhythms':
         num_classes = POLY.num_poly
         classdict = POLY.polystr_to_idx
@@ -178,7 +189,8 @@ def load_data_dict(dataset, toml_fname=""):
             'label_arr': label_arr,
             'is_balanced': is_balanced,
             'train_on_middle': train_on_middle,
-            'tomldict': tomldict
+            'tomldict': tomldict,
+            'tomlstr':  tomlstr
             }
     return ret
 

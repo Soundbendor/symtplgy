@@ -27,6 +27,7 @@ if __name__ == "__main__":
     parser.add_argument("-st", "--stats", type=strtobool, default=False, help="calculate stats")
     parser.add_argument("-sh", "--from_share", type=strtobool, default=True, help="load from share partition")
     parser.add_argument("-sf", "--suffix", type=int, default=1, help="suffix")
+    parser.add_argument("-pmd", "--ph_maxdim", type=int, default=1, help="maxdim for ph calculation")
     parser.add_argument("-ram", "--ram_mem", type=int, default=40, help="ram in gigs")
     parser.add_argument("-gpu", "--gpus", type=int, default=1, help="num of gpus to use")
     parser.add_argument("-sj", "--slurm_job", type=int, default=0, help="slurm job")
@@ -68,7 +69,7 @@ if __name__ == "__main__":
                 slurm_strarr2.append(f"#SBATCH -w {args.node}")
             slurm_strarr3 = [f"#SBATCH --mem={args.ram_mem}G", f"#SBATCH --gres=gpu:{args.gpus}", f"#SBATCH -t {args.num_days}-00:00:00", f"#SBATCH --job-name={job_str}", "#SBATCH --export=ALL", f"#SBATCH --output=/nfs/guille/eecs_research/soundbendor/kwand/out_mtmidi_mdl/{job_str}-%j.out", ""]
             slurm_strarr = slurm_strarr1 + slurm_strarr2 + slurm_strarr3
-            p_str = f"python {py_path} -ds {dataset} -ms {model_size} -sh {args.from_share} -sf {args.suffix} -mpl {args.meanpool} -fsq {args.full_seq} --data_toml {args.data_toml} --layer_idx {args.layer_idx}" 
+            p_str = f"python {py_path} -ds {dataset} -ms {model_size} -sh {args.from_share} -sf {args.suffix} -mpl {args.meanpool} -fsq {args.full_seq} --data_toml {args.data_toml} --layer_idx {args.layer_idx} --ph_maxdim {args.ph_maxdim}" 
             slurm_strarr.append(p_str)
             script_fname = f"{start_time}_{job_str}.sh"
             script_path = os.path.join(sh_dir, script_fname)

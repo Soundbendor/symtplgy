@@ -9,6 +9,8 @@ WAV_DUR = 4.0
 LOG2E = np.log2(np.exp(1.))
 
 TOML_FOLDER = 'toml'
+PH_GRAPH_FOLDER = 'ph_graph'
+PH_GROUP_FOLDER = 'ph_group'
 LAST_TOKEN_SUFFIX = 'lasttok'
 MEAN_TOKEN_SUFFIX = 'meantok'
 FULLSEQ_TOKEN_SUFFIX = 'fullseq'

@@ -1,0 +1,53 @@
+from . import util_constants as UC
+from . import util_main as UMN
+import gudhi
+import matplotlib.pyplot as plt
+import numpy as np
+from persim import plot_diagrams
+from ripser import ripser
+
+
+def save_ph_groups(dgm, configdict, layer_idx, tomlstr=''):
+    layer_str = f'l{layer_idx}'
+    for ph_idx,ph_group in enumerate(dgm):
+        save_str = None
+        if len(tomlstr) > 0:
+            save_str = f'{layer_str}_{tomlstr}-h{ph_idx}'
+        else:
+            save_str = f'{layer_str}-h{ph_idx}'
+        save_path = UMN.get_save_path('ph_group', configdict, other=save_str, make_dir = True)
+        np.save(save_path, np.array(ph_group))
+
+
+
+def save_ph_diagram_barcode(dgm, configdict, layer_idx, tomlstr=''):
+    layer_str = f'l{layer_idx}'
+    diag_str = None
+    barcode_str = None
+    if len(tomlstr) > 0:
+        diag_str = f'{layer_str}_{tomlstr}-diagram'
+        barcode_str = f'{layer_str}_{tomlstr}-barcode'
+    else:
+        diag_str = f'{layer_str}-diagram'
+        barcode_str = f'{layer_str}-barcode'
+
+    diag_path = UMN.get_save_path('ph_graph', configdict, other=diag_str, make_dir = True)
+    barcode_path = UMN.get_save_path('ph_graph', configdict, other=barcode_str, make_dir = True)
+    
+    gudhi.plot_persistence_diagram(dgm)
+
+    fig = plt.figure()
+    plt.savefig(diag_path)
+    fig.clear()
+    plt.close()
+
+    gudhi.plot_persistence_barcode(dgm)
+    
+    fig = plt.figure()
+    plt.savefig(diag_path)
+    fig.clear()
+    plt.close()
+
+def calc_rips(cur_data, maxdim = 1):
+    cur_rips = ripser(cur_data.numpy(), maxdim = maxdim, distance_matrix = False, metric = 'euclidean')
+    return cur_rips

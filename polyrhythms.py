@@ -6,7 +6,7 @@ import ph_dft
 
 subdiv = 132
 p0 = 0
-p1 =1
+p1 = 0
 
 def make_polyrhythms(low, hi):
     bars = []
