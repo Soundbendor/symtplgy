@@ -66,7 +66,7 @@ if __name__ == "__main__":
                     slurm_strarr2 = ['#SBATCH -A soundbendor', f"#SBATCH -p {args.partition}"]
             if len(args.node) > 0:
                 slurm_strarr2.append(f"#SBATCH -w {args.node}")
-            slurm_strarr3 = [f"#SBATCH --mem={args.ram_mem}G", f"#SBATCH --gres=gpu:{args.gpus}", f"#SBATCH -t {args.num_days}-00:00:00", f"#SBATCH --job-name={job_str}", "#SBATCH --export=ALL", f"#SBATCH --output=/nfs/guille/eecs_research/soundbendor/kwand/out_mtmidi_mdl/{job_str}-%j.out", ""]
+            slurm_strarr3 = [f"#SBATCH --mem={args.ram_mem}G", f"#SBATCH --gres=gpu:{args.gpus}", f"#SBATCH -t {args.num_days}-00:00:00", f"#SBATCH --job-name={job_str}", "#SBATCH --export=ALL", f"#SBATCH --output=/nfs/guille/eecs_research/soundbendor/kwand/out_symtplgy/{job_str}-%j.out", ""]
             slurm_strarr = slurm_strarr1 + slurm_strarr2 + slurm_strarr3
             p_str = f"python {py_path} -ds {dataset} -ms {model_size} -sh {args.from_share} -sf {args.suffix} -mpl {args.meanpool} -fsq {args.full_seq} --data_toml {args.data_toml} --layer_idx {args.layer_idx} --ph_maxdim {args.ph_maxdim}" 
             slurm_strarr.append(p_str)
