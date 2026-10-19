@@ -49,5 +49,5 @@ def save_ph_diagram_barcode(dgm, configdict, layer_idx, tomlstr=''):
     plt.close()
 
 def calc_rips(cur_data, maxdim = 1):
-    cur_rips = ripser(cur_data.numpy(), maxdim = maxdim, distance_matrix = False, metric = 'euclidean')
+    cur_rips = ripser(cur_data, maxdim = maxdim, distance_matrix = False, metric = 'euclidean')
     return cur_rips
