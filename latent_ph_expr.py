@@ -79,7 +79,7 @@ if __name__ == "__main__":
 
     configdict = UP.build_config(args, datadict)
 
-    cur_ds = ProbeDataset(datadict, args.model_size, layer_idx=cur_li, from_dir = from_dir, meanpool = meanpool, last_token = last_token, to_torch = True, device = device)
+    cur_ds = ProbeDataset(datadict, args.model_size, layer_idx=0, from_dir = from_dir, meanpool = meanpool, last_token = last_token, to_torch = True, device = device)
     
     torch_gen = torch.Generator(device=device)
     torch_gen.manual_seed(configdict['seed'])
