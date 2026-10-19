@@ -23,7 +23,7 @@ if __name__ == "__main__":
     parser.add_argument("-pt", "--partition", type=str, default="preempt", help="partition to run on")
     parser.add_argument("-ms", "--model_sizes", nargs="+", type=str, default=["MERT-v1-95M", "MERT-v1-330M", "wav2vec2-base", "wav2vec2-large", "musicgen-small", "musicgen-medium", "musicgen-large"], help="musicgen-small/musicgen-medium/musicgen-large/jukebox/MERT-v1-95M/MERT-v1-330M/wav2vec2-base/wav2vec2-large")
     parser.add_argument("-mpl", "--meanpool", type=strtobool, default=False, help="embeddings meanpooled over seq len (override for AR models)")
-    parser.add_argument("-fsq", "--full_seq", type=strtobool, default=True, help="use full seq embeddings (override for both AR and Masked)")
+    parser.add_argument("-fsq", "--full_seq", type=strtobool, default=False, help="use full seq embeddings (override for both AR and Masked)")
     parser.add_argument("-st", "--stats", type=strtobool, default=False, help="calculate stats")
     parser.add_argument("-sh", "--from_share", type=strtobool, default=True, help="load from share partition")
     parser.add_argument("-sf", "--suffix", type=int, default=1, help="suffix")
@@ -51,13 +51,11 @@ if __name__ == "__main__":
 
     start_time = str(int(time.time() * 1000))
     
-    using_part_rto = args.unbiased_part_rto == True or args.biased_part_rto == True 
-    expr_short = UC.EXPR_SHORT[args.expr_type] 
     for dataset in args.datasets:
         ds_short = UC.DATASET_SHORT[dataset]
         for model_size in args.model_sizes:
             size_short = UC.MODEL_SIZES_SHORT[model_size]         
-            job_str = f'{expr_short}-{ds_short}-{size_short}'
+            job_str = f'ph-{ds_short}-{size_short}'
             slurm_strarr1 = ["#!/bin/bash"]
             slurm_strarr2 = [f"#SBATCH -p {args.partition}"]
             if args.partition != 'preempt':
