@@ -45,7 +45,7 @@ def save_ph_diagram_barcode(dgm, configdict, layer_idx, tomlstr=''):
     gudhi.plot_persistence_barcode(dgm)
     
     fig = plt.figure()
-    plt.savefig(diag_path)
+    plt.savefig(barcode_path)
     fig.clear()
     plt.close()
 

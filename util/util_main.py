@@ -213,9 +213,9 @@ def get_save_path(save_type, configdict, other=None, make_dir = True):
         ext = 'npy'
     cur_path = None
     if use_expr_type_folder == False:
-        cur_path = by_projpath_multi(subpaths=[subfolder, dataset],make_dir = make_dir)
+        cur_path = by_projpath_multi(subpaths=[subfolder, dataset, model_size],make_dir = make_dir)
     else:
-        cur_path = by_projpath_multi(subpaths=[subfolder, dataset, expr_type],make_dir = make_dir)
+        cur_path = by_projpath_multi(subpaths=[subfolder, dataset, model_size, expr_type],make_dir = make_dir)
     fname = None
     if other == None:
         fname = f'{model_size}-{suffix}.{ext}'
