@@ -36,7 +36,7 @@ class ProbeDataset(TUD.Dataset):
         cur_name = cur_row['name']
         cur_fold = cur_row['fold']
         cur_truth = self.classdict[cur_row[self.label]]
-        get_name = UMN.add_fname_suffix(cur_name, meanpool = self.mean_pool, last_token = self.last_token, out_ext='')
+        get_name = UMN.add_fname_suffix(cur_name, meanpool = self.meanpool, last_token = self.last_token, out_ext='')
         cur_arr = UD.get_memmap_at_idx(get_name, cur_fold, self.model_size, self.dataset, self.layer_idx, use_64bit=self.is_64bit, to_torch = self.to_torch, other_projdir = self.from_dir, device=self.device)
         if self.emit_name == False:
             return cur_arr, cur_truth
