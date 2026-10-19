@@ -57,7 +57,6 @@ def get_pairwise_distances(cur_data, norm=True):
     else:
         return ret
 
-d
 
 def calc_rips(cur_data, maxdim = 1, calc_distance = True):
     cur_rips = None
