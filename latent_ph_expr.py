@@ -69,10 +69,7 @@ if __name__ == "__main__":
         torch.cuda.empty_cache()
         torch.set_default_device(device)
     """
-    torch_gen = torch.Generator(device=device)
-    torch_gen.manual_seed(configdict['seed'])
-    set_seed(configdict['seed'])
-
+    
     from_dir = ""
     if args.from_share == True:
         from_dir = os.path.join(UC.SHARE_PATH, 'syntheory_plus_expr')
@@ -83,6 +80,11 @@ if __name__ == "__main__":
     configdict = UP.build_config(args, datadict)
 
     cur_ds = ProbeDataset(datadict, args.model_size, layer_idx=cur_li, from_dir = from_dir, meanpool = meanpool, last_token = last_token, to_torch = True, device = device)
+    
+    torch_gen = torch.Generator(device=device)
+    torch_gen.manual_seed(configdict['seed'])
+    set_seed(configdict['seed'])
+
     if args.debug == True:
         pass
     else: 
