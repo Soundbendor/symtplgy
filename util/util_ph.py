@@ -65,5 +65,5 @@ def calc_rips(cur_data, maxdim = 1, calc_distance = True):
         cur_rips = ripser(cur_data, maxdim = maxdim, distance_matrix = False, metric = 'euclidean')
     else:
         dists = squareform(get_pairwise_distances(b_arr, norm=True)*100.)
-        cur_rips = ripser(dists, maxdim = maxdim, distance_matrix = True, metric)
+        cur_rips = ripser(dists, maxdim = maxdim, distance_matrix = True)
     return cur_rips
