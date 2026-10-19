@@ -75,7 +75,7 @@ if __name__ == "__main__":
         from_dir = os.path.join(UC.SHARE_PATH, 'syntheory_plus_expr')
     datadict = UD.load_data_dict(args.dataset, toml_fname = args.data_toml)
 
-    meanpool, last_token =  UEX.parse_seqtype_overrides(model_size, meanpool_override = args.meanpool, full_seq_override = args.full_seq)
+    meanpool, last_token =  UEX.parse_seqtype_overrides(args.model_size, meanpool_override = args.meanpool, full_seq_override = args.full_seq)
 
     configdict = UP.build_config(args, datadict)
 
