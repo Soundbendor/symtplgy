@@ -101,7 +101,7 @@ def load_data_dict(dataset, toml_fname=""):
     if len(toml_fname) > 0:
         tomlpath = os.path.join(UMN.by_projpath(UC.TOML_FOLDER), toml_fname)
         tomldict = parse_toml(tomlpath)
-        tomlstr = get_toml_filter_str(tomlpath)
+        tomlstr = get_toml_filter_str(tomldict)
     if dataset == 'polyrhythms':
         num_classes = POLY.num_poly
         classdict = POLY.polystr_to_idx
