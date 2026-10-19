@@ -218,9 +218,9 @@ def get_save_path(save_type, configdict, other=None, make_dir = True):
         cur_path = by_projpath_multi(subpaths=[subfolder, dataset, model_size, expr_type],make_dir = make_dir)
     fname = None
     if other == None:
-        fname = f'{model_size}-{suffix}.{ext}'
+        fname = f'{suffix}.{ext}'
     else:
-        fname = f'{model_size}_{other}-{suffix}.{ext}'
+        fname = f'{other}-{suffix}.{ext}'
     return os.path.join(cur_path, fname)
 
 
