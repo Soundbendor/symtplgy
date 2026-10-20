@@ -9,7 +9,7 @@ import gudhi
 
 datasets = ['polyrhythms']
 
-models = ['musicgen-small', 'musicgen-medium']
+models = ['musicgen-small', 'musicgen-medium', 'musicgen-large']
 inst1 = 'Agogo'
 inst2 = 'Woodblock'
 offset_lvl = 0
