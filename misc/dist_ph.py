@@ -7,6 +7,7 @@ from util import util_constants as UC
 from util import util_ph as UPH
 import gudhi
 
+sorter = lambda x: x[np.argsort(x[:,0])][::-1]
 datasets = ['polyrhythms']
 
 models = ['musicgen-small', 'musicgen-medium', 'musicgen-large']
@@ -64,13 +65,13 @@ for ds in datasets:
             h1_file = f'l{l}_inst1_{inst1}-inst2_{inst2}-offset_lvl_{offset_lvl}-rvb_lvl_{rvb_lvl}-bpm_{bpm}-h1-{suffix}.npy'
             h0 = np.load(os.path.join(groupdir,ds,m,h0_file))
             h1 = np.load(os.path.join(groupdir,ds,m,h1_file))
-            dgm = [h0,h1]
+            dgm = [sorter(h0),sorter(h1)]
             for s in symb:
                 h0_file = f'{ds}_{s}-h0.npy'
                 h1_file = f'{ds}_{s}-h1.npy'
                 h0 = np.load(os.path.join(groupdir,ds,'symbolic',h0_file))
                 h1 = np.load(os.path.join(groupdir,ds,'symbolic',h1_file))
-                cur_s = [h0,h1]
+                cur_s = [sorter(h0),sorter(h1)]
                 cur_wass_h0 = gudhi.hera.wasserstein_distance(cur_s[0], dgm[0])
                 cur_wass_h1 = gudhi.hera.wasserstein_distance(cur_s[1], dgm[1])
                 cur_bottle_h0 = gudhi.bottleneck_distance(cur_s[0], dgm[0])
