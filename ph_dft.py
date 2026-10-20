@@ -3,6 +3,8 @@ import gudhi
 from scipy.spatial.distance import pdist, squareform
 from ripser import ripser
 
+birth_sorter = lambda x: x[np.argsort(x[:,0])][::-1]
+
 def make_bar_rep(bar_pairs,t = 8, p=24):
     # shape should be (p,t)
     accum = np.zeros((p,t)).astype(np.complex128)

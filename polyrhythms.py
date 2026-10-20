@@ -23,7 +23,8 @@ def make_polyrhythms(low, hi):
 
 rips = ph_dft.calc_rips(make_polyrhythms(2,12), t=subdiv, p=2)
 #plot_diagrams(rips['dgms'], show = True)
-gudhi.plot_persistence_diagram(rips['dgms'])
+dgms = [ph_dft.birth_sorter(x) for x in rips['dgms']]
+gudhi.plot_persistence_diagram(dgms)
 plt.show()
-gudhi.plot_persistence_barcode(rips['dgms'])
+gudhi.plot_persistence_barcode(dgms)
 plt.show()
